@@ -1,0 +1,126 @@
+{
+  "healthRecords": [
+    {
+      "name": "Riya Sharma",
+      "type": "Vaccine Certificate",
+      "issuer": "Apollo Hospitals",
+      "date": "2024-06-01",
+      "status": "Valid",
+      "patient_id": "IN20240601RS001",
+      "vaccine_name": "Covishield",
+      "dose_number": 2,
+      "location": "Bangalore, India",
+      "doctor": "Dr. Amit Verma",
+      "batch_number": "CVD20240601B2",
+      "age": 28,
+      "gender": "Female",
+      "blood_group": "B+",
+      "phone": "+91-9876543210",
+      "emergency_contact": "Rajesh Sharma (+91-9876543211)",
+      "allergies": ["Penicillin"],
+      "medical_history": ["Hypertension", "Diabetes Type 2"],
+      "next_appointment": "2024-12-01"
+    },
+    {
+      "name": "Arjun Patel",
+      "type": "Medical Report",
+      "issuer": "Max Healthcare",
+      "date": "2024-07-15",
+      "status": "Active Treatment",
+      "patient_id": "IN20240715AP002",
+      "condition": "Acute Bronchitis",
+      "location": "Delhi, India",
+      "doctor": "Dr. Priya Singh",
+      "age": 35,
+      "gender": "Male",
+      "blood_group": "O+",
+      "phone": "+91-8765432109",
+      "emergency_contact": "Meera Patel (+91-8765432108)",
+      "allergies": ["Dust", "Pollen"],
+      "medical_history": ["Asthma"],
+      "prescription": [
+        {
+          "medicine": "Azithromycin",
+          "dosage": "500mg",
+          "frequency": "Once daily",
+          "duration": "5 days"
+        },
+        {
+          "medicine": "Salbutamol Inhaler",
+          "dosage": "2 puffs",
+          "frequency": "As needed",
+          "duration": "30 days"
+        }
+      ],
+      "lab_results": {
+        "chest_xray": "Mild inflammation in lower lobe",
+        "blood_count": "Within normal limits",
+        "oxygen_saturation": "96%"
+      },
+      "next_appointment": "2024-07-22"
+    },
+    {
+      "name": "Sanya Gupta",
+      "type": "Vaccination Record",
+      "issuer": "Fortis Hospital",
+      "date": "2024-05-20",
+      "status": "Completed",
+      "patient_id": "IN20240520SG003",
+      "vaccine_name": "Pfizer-BioNTech",
+      "dose_number": 1,
+      "location": "Mumbai, India",
+      "doctor": "Dr. Rohit Mehta",
+      "batch_number": "PFZ20240520M1",
+      "age": 22,
+      "gender": "Female",
+      "blood_group": "A-",
+      "phone": "+91-7654321098",
+      "emergency_contact": "Vikash Gupta (+91-7654321097)",
+      "allergies": ["None known"],
+      "medical_history": ["None"],
+      "side_effects": "Mild soreness at injection site",
+      "next_dose_due": "2024-08-20",
+      "vaccination_card_number": "VAC2024052003"
+    },
+    {
+      "name": "Rahul Kumar",
+      "type": "Surgery Report",
+      "issuer": "AIIMS Delhi",
+      "date": "2024-03-10",
+      "status": "Post-Operative Recovery",
+      "patient_id": "IN20240310RK004",
+      "procedure": "Appendectomy",
+      "location": "New Delhi, India",
+      "doctor": "Dr. Sanjay Reddy",
+      "surgeon": "Dr. Kavita Sharma",
+      "age": 42,
+      "gender": "Male",
+      "blood_group": "AB+",
+      "phone": "+91-6543210987",
+      "emergency_contact": "Sunita Kumar (+91-6543210986)",
+      "allergies": ["Latex"],
+      "medical_history": ["High Cholesterol"],
+      "surgery_details": {
+        "type": "Laparoscopic",
+        "duration": "45 minutes",
+        "anesthesia": "General",
+        "complications": "None"
+      },
+      "post_op_instructions": [
+        "Rest for 2 weeks",
+        "No heavy lifting",
+        "Follow-up in 1 week",
+        "Antibiotics as prescribed"
+      ],
+      "discharge_date": "2024-03-12",
+      "next_appointment": "2024-03-17"
+    }
+  ],
+  "metadata": {
+    "total_records": 4,
+    "last_updated": "2024-07-24",
+    "database_version": "2.1",
+    "encryption_status": "AES-256 Encrypted",
+    "backup_location": "Cloud Storage - Asia Pacific"
+  }
+}

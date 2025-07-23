@@ -1,0 +1,28 @@
+{
+  "name": "trusty-health-verifier",
+  "version": "1.0.0",
+  "description": "Smart Health Record Verifier on Hedera network",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "dev": "nodemon index.js"
+  },
+  "dependencies": {
+    "@google/generative-ai": "^0.24.1",
+    "@hashgraph/sdk": "^2.69.0",
+    "autoprefixer": "^10.4.21",
+    "axios": "^1.11.0",
+    "canvas": "^3.1.2",
+    "cors": "^2.8.5",
+    "dotenv": "^16.3.1",
+    "express": "^4.21.2",
+    "framer-motion": "^12.23.6",
+    "multer": "^2.0.2",
+    "pdfjs-dist": "^3.11.174",
+    "postcss": "^8.5.6",
+    "tailwindcss": "^4.1.11"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.22"
+  }
+}
