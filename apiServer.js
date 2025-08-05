@@ -2,7 +2,7 @@ const express = require('express');
 const multer = require('multer');
 const fs = require('fs');
 const path = require('path');
-const { verifyHealthRecord } = require('./aiVerifier');
+const { comprehensiveAIVerification } = require('./aiVerifier');
 const { generateMetadata } = require('./metadataGenerator');
 const { hederaClient, submitToHCS } = require('./hederaClient');
 require('dotenv').config();
@@ -15,7 +15,24 @@ const crypto = require('crypto');
 
 async function extractWithGemini(filePath, originalName) {
     const ext = path.extname(originalName).toLowerCase();
-    const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
+    const geminiApiKey = process.env.GEMINI_API_KEY;
+    
+    if (!geminiApiKey) {
+        console.log('Gemini API key not found, using fallback extraction');
+        // Return a basic structure for testing
+        return {
+            extractedData: {
+                name: "Sample Patient",
+                type: "Health Record",
+                issuer: "Sample Hospital",
+                date: new Date().toISOString().split('T')[0],
+                status: "Valid"
+            },
+            message: "Fallback extraction - Gemini API key required for full document analysis"
+        };
+    }
+    
+    const genAI = new GoogleGenerativeAI(geminiApiKey);
     const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
     let geminiResult = null;
     if ([
@@ -44,8 +61,16 @@ async function extractWithGemini(filePath, originalName) {
             allResults.push(result);
         }
         geminiResult = allResults;
+    } else if (ext === '.json') {
+        // For JSON files, read and parse directly
+        const jsonData = fs.readFileSync(filePath, 'utf8');
+        try {
+            return JSON.parse(jsonData);
+        } catch (e) {
+            throw new Error('Invalid JSON file format');
+        }
     } else {
-        throw new Error('Unsupported file type for Gemini extraction. Only images and PDFs are supported.');
+        throw new Error('Unsupported file type for Gemini extraction. Only images, PDFs, and JSON files are supported.');
     }
     return geminiResult;
 }
@@ -75,11 +100,21 @@ app.post('/api/verify', upload.single('record'), async (req, res) => {
         const extractedJson = JSON.stringify(geminiResult, null, 2);
         const hash = crypto.createHash('sha256').update(extractedJson).digest('hex');
 
+        // Enhanced AI verification
+        const aiVerification = await comprehensiveAIVerification(geminiResult);
+        
         const metadata = {
             hash,
             timestamp: new Date().toISOString(),
-            status: 'verified',
-            model: 'gemini-1.5-flash'
+            status: aiVerification.isValid ? 'verified' : 'failed',
+            model: 'multi-ai-system',
+            aiVerification: {
+                isValid: aiVerification.isValid,
+                confidence: aiVerification.overallConfidence,
+                riskLevel: aiVerification.summary.riskLevel,
+                passedChecks: aiVerification.summary.passedChecks,
+                totalChecks: aiVerification.summary.totalChecks
+            }
         };
 
         let txId = null;
@@ -95,7 +130,13 @@ app.post('/api/verify', upload.single('record'), async (req, res) => {
         res.json({
             geminiResult,
             metadata,
-            hashscanUrl
+            hashscanUrl,
+            aiVerification: {
+                isValid: aiVerification.isValid,
+                confidence: aiVerification.overallConfidence,
+                verificationMethods: aiVerification.verificationMethods,
+                summary: aiVerification.summary
+            }
         });
     } catch (err) {
         res.status(500).json({ error: err.message });

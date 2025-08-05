@@ -1,9 +1,11 @@
+"use client";
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { Container, Card, CardContent, Typography, Box, Alert, CircularProgress } from '@mui/material';
+import Footer from '@/components/Footer';
 
 export default function TopicPage() {
-  const [info, setInfo] = useState<any>(null);
+  const [info, setInfo] = useState<Record<string, unknown> | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
 
@@ -21,21 +23,45 @@ export default function TopicPage() {
   }, []);
 
   return (
-    <Container maxWidth="sm" sx={{ mt: 8, mb: 8 }}>
-      <Card sx={{ boxShadow: 4 }}>
-        <CardContent>
-          <Typography variant="h5" fontWeight={700} color="primary" mb={2}>
-            Topic Information
-          </Typography>
+    <>
+      <Container maxWidth="md" sx={{ 
+        py: 8, 
+        flex: 1,
+        display: 'flex',
+        flexDirection: 'column',
+        minHeight: 'calc(100vh - 120px)'
+      }}>
+      <Box textAlign="center" mb={6}>
+        <Typography variant="h3" fontWeight={300} sx={{ color: '#fff', mb: 2 }}>
+          Blockchain Topic Details
+        </Typography>
+        <Typography variant="h6" sx={{ color: 'rgba(255, 255, 255, 0.7)', fontWeight: 400 }}>
+          View Hedera blockchain topic information and configuration
+        </Typography>
+      </Box>
+
+      <Card sx={{ 
+        backgroundColor: 'rgba(255, 255, 255, 0.1)', 
+        backdropFilter: 'blur(20px)',
+        border: '1px solid rgba(255, 255, 255, 0.2)',
+        maxWidth: '800px',
+        mx: 'auto'
+      }}>
+        <CardContent sx={{ p: 4 }}>
           {loading ? (
             <Box display="flex" justifyContent="center" alignItems="center" minHeight={200}>
-              <CircularProgress />
+              <CircularProgress sx={{ color: '#fff' }} />
             </Box>
           ) : error ? (
             <Alert severity="error">{error}</Alert>
           ) : (
-            <Box>
-              <pre style={{ background: '#f6f8fa', padding: 16, borderRadius: 8, marginTop: 8 }}>
+            <Box sx={{ 
+              background: 'rgba(0, 0, 0, 0.3)', 
+              padding: 3, 
+              borderRadius: 2,
+              border: '1px solid rgba(255, 255, 255, 0.1)'
+            }}>
+              <pre style={{ color: '#fff', margin: 0, fontSize: '14px' }}>
                 {JSON.stringify(info, null, 2)}
               </pre>
             </Box>
@@ -43,5 +69,7 @@ export default function TopicPage() {
         </CardContent>
       </Card>
     </Container>
+    <Footer />
+  </>
   );
 } 
