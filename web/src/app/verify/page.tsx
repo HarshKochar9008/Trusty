@@ -110,7 +110,7 @@ export default function VerifyPage() {
       formData.append("record", file);
       
       const response = await axios.post(
-        "http://localhost:3001/api/verify",
+        "/api/verify",
         formData,
         {
           headers: {

@@ -145,7 +145,7 @@ export default function TransactionsPage() {
   const loadHederaTransactions = async () => {
     setLoading(true);
     try {
-      const response = await axios.get("http://localhost:3001/api/topic/messages");
+              const response = await axios.get("/api/topic/messages");
       setMessages(response.data.messages || []);
       setError("");
     } catch (err: any) {
@@ -157,7 +157,7 @@ export default function TransactionsPage() {
 
   const loadVerifiedDocuments = async () => {
     try {
-      const response = await axios.get<VerifiedDocumentsResponse>("http://localhost:3001/api/verified-documents");
+              const response = await axios.get<VerifiedDocumentsResponse>("/api/verified-documents");
       setVerifiedDocuments(response.data.verifiedDocuments || []);
     } catch (err: any) {
       console.error("Failed to fetch verified documents:", err);
@@ -192,13 +192,16 @@ export default function TransactionsPage() {
     }
   };
 
-  const getConfidenceColor = (confidence: number) => {
+  const getConfidenceColor = (confidence?: number) => {
+    if (!confidence) return '#9e9e9e';
     if (confidence >= 0.8) return '#4caf50';
     if (confidence >= 0.6) return '#ff9800';
     return '#f44336';
   };
 
-  const getRiskLevelColor = (riskLevel: string) => {
+  const getRiskLevelColor = (riskLevel?: string) => {
+    if (!riskLevel) return '#9e9e9e';
+    
     switch (riskLevel) {
       case 'low':
         return '#4caf50';
@@ -858,21 +861,25 @@ export default function TransactionsPage() {
                               <Box>
                                 <Typography sx={{ color: 'rgba(255, 255, 255, 0.7)', fontSize: 12 }}>
                                   <strong>Risk Level:</strong> 
-                                  <Chip 
-                                    label={doc.aiVerification.riskLevel} 
-                                    size="small" 
-                                    sx={{ 
-                                      ml: 1, 
-                                      backgroundColor: getRiskLevelColor(doc.aiVerification.riskLevel),
-                                      color: '#fff',
-                                      fontSize: 10
-                                    }} 
-                                  />
+                                  {doc.aiVerification?.riskLevel ? (
+                                    <Chip 
+                                      label={doc.aiVerification.riskLevel} 
+                                      size="small" 
+                                      sx={{ 
+                                        ml: 1, 
+                                        backgroundColor: getRiskLevelColor(doc.aiVerification.riskLevel),
+                                        color: '#fff',
+                                        fontSize: 10
+                                      }} 
+                                    />
+                                  ) : (
+                                    <span style={{ color: 'rgba(255, 255, 255, 0.5)' }}>N/A</span>
+                                  )}
                                 </Typography>
                               </Box>
                               <Box>
                                 <Typography sx={{ color: 'rgba(255, 255, 255, 0.7)', fontSize: 12 }}>
-                                  <strong>Checks:</strong> {doc.aiVerification.passedChecks}/{doc.aiVerification.totalChecks}
+                                  <strong>Checks:</strong> {doc.aiVerification?.passedChecks || 0}/{doc.aiVerification?.totalChecks || 0}
                                 </Typography>
                               </Box>
                               <Box sx={{ gridColumn: { xs: '1', sm: '1 / -1', md: '1 / -1' } }}>
@@ -903,17 +910,19 @@ export default function TransactionsPage() {
                                   width: '100%',
                                   mb: 2
                                 }}>
-                                  <Chip 
-                                    icon={<Assessment />}
-                                    label={`${Math.round(doc.aiVerification.confidence * 100)}% Confidence`}
-                                    size="small"
-                                    sx={{ 
-                                      backgroundColor: getConfidenceColor(doc.aiVerification.confidence),
-                                      color: '#fff',
-                                      flexShrink: 0
-                                    }}
-                                  />
-                                  {doc.aiVerification.verificationMethods && doc.aiVerification.verificationMethods.map((method: string, methodIdx: number) => (
+                                  {doc.aiVerification?.confidence && (
+                                    <Chip 
+                                      icon={<Assessment />}
+                                      label={`${Math.round(doc.aiVerification.confidence * 100)}% Confidence`}
+                                      size="small"
+                                      sx={{ 
+                                        backgroundColor: getConfidenceColor(doc.aiVerification.confidence),
+                                        color: '#fff',
+                                        flexShrink: 0
+                                      }}
+                                    />
+                                  )}
+                                  {doc.aiVerification?.verificationMethods && doc.aiVerification.verificationMethods.map((method: string, methodIdx: number) => (
                                     <Chip 
                                       key={methodIdx}
                                       label={method}

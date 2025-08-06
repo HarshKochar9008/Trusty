@@ -11,7 +11,7 @@ export default function TopicPage() {
 
   useEffect(() => {
     setLoading(true);
-    axios.get("http://localhost:3001/api/topic/info")
+          axios.get("/api/topic")
       .then(res => {
         setInfo(res.data);
         setError("");

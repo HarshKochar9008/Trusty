@@ -4,6 +4,7 @@ import "./globals.css";
 import ClientLayout from "@/components/ClientLayout";
 import { WalletProvider } from "@/lib/walletContext";
 import { StarsBackground } from "@/components/core/backgrounds/stars";
+import ErrorBoundary from "@/components/ErrorBoundary";
 const geistSans = Geist({
   variable: "--font-geist-sans",
   subsets: ["latin"],
@@ -32,11 +33,13 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
-        <WalletProvider>
-          <ClientLayout>
-            {children}
-          </ClientLayout>
-        </WalletProvider>
+        <ErrorBoundary>
+          <WalletProvider>
+            <ClientLayout>
+              {children}
+            </ClientLayout>
+          </WalletProvider>
+        </ErrorBoundary>
       </body>
     </html>
   );
