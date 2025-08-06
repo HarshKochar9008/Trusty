@@ -4,6 +4,7 @@ import { AppBar, Toolbar, Typography, Button, Box, Container } from '@mui/materi
 
 import { WalletConnect } from './WalletConnect';
 import { StarsBackground } from './core/backgrounds/stars';
+import Footer from './Footer';
 
 export default function ClientLayout({ children }: { children: React.ReactNode }) {
   return (
@@ -122,6 +123,19 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
                   transform: 'translateY(-1px)'
                 } 
               }}>AI Dashboard</Button>
+              <Button href="/issuer-dashboard" sx={{
+                fontWeight: 500,
+                color: '#fff',
+                textTransform: 'none',
+                fontSize: '14px',
+                padding: '8px 12px',
+                borderRadius: '8px',
+                transition: 'all 0.2s ease-in-out',
+                '&:hover': {
+                  backgroundColor: 'rgba(255, 255, 255, 0.1)',
+                  transform: 'translateY(-1px)'
+                }
+              }}>Issuer Dashboard</Button>
               <WalletConnect />
             </Box>
             </Box>
@@ -129,13 +143,15 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
         </Container>
       </AppBar>
       <Box sx={{ 
-        paddingTop: '120px', // Account for fixed AppBar height
         flex: 1,
         display: 'flex',
-        flexDirection: 'column'
+        flexDirection: 'column',
+        paddingTop: '120px', // Add proper top padding to account for fixed header
+        width: '100%'
       }}>
         {children}
       </Box>
+      <Footer />
     </StarsBackground>
   );
 } 

@@ -1,32 +1,56 @@
 import { Container, Card, CardContent, Typography, Box } from '@mui/material';
-import Footer from '@/components/Footer';
 
 export default function AboutPage() {
   return (
-    <>
-      <Container maxWidth="md" sx={{ 
-        py: 8, 
-        flex: 1, 
-        display: 'flex', 
-        flexDirection: 'column',
-        minHeight: 'calc(100vh - 120px)'
+    <Container maxWidth="lg" sx={{ py: 6 }}>
+      {/* Header */}
+      <Box sx={{ 
+        position: 'relative',
+        mb: 8,
+        mt: 4
       }}>
-        <Box textAlign="center" mb={6}>
-          <Typography variant="h3" fontWeight={300} sx={{ color: '#fff', mb: 2 }}>
-            About Hedera Trusty
+        <Box sx={{ 
+          position: 'relative',
+          zIndex: 2,
+          maxWidth: { xs: '100%', lg: '80%' },
+          textAlign: 'center',
+          mx: 'auto'
+        }}>
+          <Typography variant="h1" sx={{
+            fontWeight: 700,
+            mb: 3,
+            fontSize: { xs: '3rem', md: '4rem', lg: '4.5rem' },
+            lineHeight: 1.1
+          }}>
+            <Box component="span" sx={{ 
+              background: 'linear-gradient(135deg, #10A74A 0%,rgb(71, 111, 255) 100%)',
+              WebkitBackgroundClip: 'text', 
+              WebkitTextFillColor: 'transparent',
+              backgroundClip: 'text'
+            }}>
+              About Hedera Trusty
+            </Box>
           </Typography>
-          <Typography variant="h6" sx={{ color: 'rgba(255, 255, 255, 0.7)', fontWeight: 400 }}>
+          <Typography variant="h5" sx={{ 
+            color: 'rgba(255, 255, 255, 0.8)', 
+            fontWeight: 500,
+            fontSize: { xs: '1.2rem', md: '1.5rem' },
+            lineHeight: 1.4,
+            mb: 3,
+          }}>
             Next-generation health record verification platform powered by AI & blockchain
           </Typography>
         </Box>
+      </Box>
 
+      {/* Content Section */}
+      <Box sx={{ mb: 8 }}>
         <Card sx={{ 
           backgroundColor: 'rgba(255, 255, 255, 0.1)', 
           backdropFilter: 'blur(20px)',
           border: '1px solid rgba(255, 255, 255, 0.2)',
           maxWidth: '800px',
-          mx: 'auto',
-          flex: 1
+          mx: 'auto'
         }}>
           <CardContent sx={{ p: 4 }}>
             <Box display="flex" alignItems="center" gap={2} mb={4}>
@@ -67,8 +91,25 @@ export default function AboutPage() {
             </Box>
           </CardContent>
         </Card>
-      </Container>
-      <Footer />
-    </>
+      </Box>
+
+      {/* Spacer Section for proper scrolling */}
+      <Box sx={{ mb: 8 }}>
+        <Box sx={{ 
+          height: '200px',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center'
+        }}>
+          <Typography sx={{ 
+            color: 'rgba(255, 255, 255, 0.3)', 
+            fontSize: '14px',
+            textAlign: 'center'
+          }}>
+            About Hedera Trusty
+          </Typography>
+        </Box>
+      </Box>
+    </Container>
   );
 } 

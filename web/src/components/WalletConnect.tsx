@@ -353,7 +353,7 @@ export const WalletConnect: React.FC = () => {
           </MenuItem>
         ))}
       </Menu>
-
+{/* 
       <Button
         variant="outlined"
         size="small"
@@ -491,7 +491,7 @@ export const WalletConnect: React.FC = () => {
             Close
           </Button>
         </DialogActions>
-      </Dialog>
+      </Dialog> */}
     </>
   );
 }; 

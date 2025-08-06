@@ -10,6 +10,10 @@ import {
 } from "motion/react";
 import { cn } from "@/lib/utils";
 
+const STAR_FIELD_WIDTH = 4000;
+const STAR_FIELD_HEIGHT = 4000;
+const STAR_ANIMATION_DISTANCE = 2000;
+
 type StarLayerProps = HTMLMotionProps<"div"> & {
   count: number;
   size: number;
@@ -20,8 +24,10 @@ type StarLayerProps = HTMLMotionProps<"div"> & {
 function generateStars(count: number, starColor: string) {
   const shadows: string[] = [];
   for (let i = 0; i < count; i++) {
-    const x = Math.floor(Math.random() * 4000) - 2000;
-    const y = Math.floor(Math.random() * 4000) - 2000;
+    const x =
+      Math.floor(Math.random() * STAR_FIELD_WIDTH) - STAR_FIELD_WIDTH / 2;
+    const y =
+      Math.floor(Math.random() * STAR_FIELD_HEIGHT) - STAR_FIELD_HEIGHT / 2;
     shadows.push(`${x}px ${y}px ${starColor}`);
   }
   return shadows.join(", ");
@@ -36,7 +42,7 @@ function StarLayer({
   ...props
 }: StarLayerProps) {
   const [boxShadow, setBoxShadow] = React.useState<string>("");
-  
+
   React.useEffect(() => {
     setBoxShadow(generateStars(count, starColor));
   }, [count, starColor]);
@@ -44,9 +50,10 @@ function StarLayer({
   return (
     <motion.div
       data-slot="star-layer"
-      animate={{ y: [0, -2000] }}
+      animate={{ y: [0, -STAR_ANIMATION_DISTANCE] }}
       transition={transition}
-      className={cn("absolute top-0 left-0 w-full h-[2000px]", className)}
+      className={cn("absolute top-0 left-0 w-full min-h-full", className)}
+      style={{ height: `${STAR_ANIMATION_DISTANCE}px` }}
       {...props}
     >
       <div
@@ -58,8 +65,9 @@ function StarLayer({
         }}
       />
       <div
-        className="absolute bg-transparent rounded-full top-[2000px]"
+        className="absolute bg-transparent rounded-full"
         style={{
+          top: `${STAR_ANIMATION_DISTANCE}px`,
           width: `${size}px`,
           height: `${size}px`,
           boxShadow: boxShadow,
@@ -74,7 +82,18 @@ type StarsBackgroundProps = React.ComponentProps<"div"> & {
   speed?: number;
   transition?: SpringOptions;
   starColor?: string;
+  layerConfigs?: Array<{
+    count: number;
+    size: number;
+    speedMultiplier: number;
+  }>;
 };
+
+const defaultLayerConfigs = [
+  { count: 1000, size: 1, speedMultiplier: 1 },
+  { count: 400, size: 2, speedMultiplier: 2 },
+  { count: 200, size: 3, speedMultiplier: 3 },
+];
 
 export function StarsBackground({
   children,
@@ -83,10 +102,11 @@ export function StarsBackground({
   speed = 50,
   transition = { stiffness: 50, damping: 20 },
   starColor = "#fff",
+  layerConfigs = defaultLayerConfigs,
   ...props
 }: StarsBackgroundProps) {
-  const offsetX = useMotionValue(1);
-  const offsetY = useMotionValue(1);
+  const offsetX = useMotionValue(0);
+  const offsetY = useMotionValue(0);
   const springX = useSpring(offsetX, transition);
   const springY = useSpring(offsetY, transition);
 
@@ -105,43 +125,29 @@ export function StarsBackground({
   return (
     <div
       data-slot="stars-background"
-      className={cn(
-        "relative size-full bg-[radial-gradient(ellipse_at_bottom,_#262626_0%,_#000_100%)]",
-        "bg-[radial-gradient(ellipse_at_bottom,_#262626_0%,_#000_100%)]",
-        className,
-      )}
+      className={cn("relative w-full h-full", className)}
       onMouseMove={handleMouseMove}
       {...props}
     >
-      <motion.div style={{ x: springX, y: springY }}>
-        <StarLayer
-          count={1000}
-          size={1}
-          transition={{ repeat: Infinity, duration: speed, ease: "linear" }}
-          starColor={starColor}
-        />
-        <StarLayer
-          count={400}
-          size={2}
-          transition={{
-            repeat: Infinity,
-            duration: speed * 2,
-            ease: "linear",
-          }}
-          starColor={starColor}
-        />
-        <StarLayer
-          count={200}
-          size={3}
-          transition={{
-            repeat: Infinity,
-            duration: speed * 3,
-            ease: "linear",
-          }}
-          starColor={starColor}
-        />
+      <motion.div
+        className="absolute top-0 left-0 w-full h-full"
+        style={{ x: springX, y: springY }}
+      >
+        {layerConfigs.map((config, i) => (
+          <StarLayer
+            key={i}
+            count={config.count}
+            size={config.size}
+            transition={{
+              repeat: Infinity,
+              duration: speed * config.speedMultiplier,
+              ease: "linear",
+            }}
+            starColor={starColor}
+          />
+        ))}
       </motion.div>
       {children}
     </div>
   );
-} 
+}

@@ -28,6 +28,7 @@ import { useWallet } from '@/lib/walletContext';
 import { createHederaUtils, NetworkName } from '@/lib/hederaUtils';
 import Footer from '@/components/Footer';
 
+
 export default function WalletDemoPage() {
   const { isConnected, accountId, balance, signMessage } = useWallet();
   const [message, setMessage] = useState('');
@@ -156,24 +157,55 @@ export default function WalletDemoPage() {
             />
                   </CardContent>
       </Card>
-    </Container>
-    <Footer />
+        </Container>
   </>
   );
   }
 
   return (
-    <>
-      <Container maxWidth="lg" sx={{ 
-        py: 8, 
-        flex: 1,
-        display: 'flex',
-        flexDirection: 'column',
-        minHeight: 'calc(100vh - 120px)'
+    <Container maxWidth="lg" sx={{ py: 6 }}>
+      {/* Header */}
+      <Box sx={{ 
+        position: 'relative',
+        mb: 8,
+        mt: 4
       }}>
-      <Typography variant="h3" sx={{ color: '#fff', mb: 4, textAlign: 'center' }}>
-        Wallet Connect & Operations
-      </Typography>
+        <Box sx={{ 
+          position: 'relative',
+          zIndex: 2,
+          maxWidth: { xs: '100%', lg: '80%' },
+          textAlign: 'center',
+          mx: 'auto'
+        }}>
+          <Typography variant="h1" sx={{
+            fontWeight: 700,
+            mb: 3,
+            fontSize: { xs: '3rem', md: '4rem', lg: '4.5rem' },
+            lineHeight: 1.1
+          }}>
+            <Box component="span" sx={{ 
+              background: 'linear-gradient(135deg, #10A74A 0%,rgb(71, 111, 255) 100%)',
+              WebkitBackgroundClip: 'text', 
+              WebkitTextFillColor: 'transparent',
+              backgroundClip: 'text'
+            }}>
+              Wallet Connect & Operations
+            </Box>
+          </Typography>
+          <Typography variant="h5" sx={{ 
+            color: 'rgba(255, 255, 255, 0.8)', 
+            fontWeight: 500,
+            fontSize: { xs: '1.2rem', md: '1.5rem' },
+            lineHeight: 1.4,
+            mb: 3,
+          }}>
+            Connect your wallet and explore blockchain operations
+          </Typography>
+        </Box>
+      </Box>
+
+      {/* Content Section */}
+      <Box sx={{ mb: 8 }}>
 
       {/* Connection Status */}
       <Card sx={{ 
@@ -418,8 +450,7 @@ export default function WalletDemoPage() {
           </Card>
         </Box>
       </Box>
+      </Box>
     </Container>
-    <Footer />
-  </>
   );
 } 

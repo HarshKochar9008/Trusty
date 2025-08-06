@@ -8,7 +8,7 @@ export default function Footer() {
       sx={{
         backgroundColor: 'rgba(255, 255, 255, 0.02)',
         borderTop: '1px solid rgba(255, 255, 255, 0.05)',
-        py: 4,
+        py: 2,
         mt: 'auto',
         width: '100%',
         flexShrink: 0
@@ -48,7 +48,7 @@ export default function Footer() {
             </Typography>
           </Box>
           <Box>
-            <Link href="" target="_blank" rel="noopener noreferrer" sx={{ textDecoration: 'none' }}>
+            <Link href="https://x.com/Too_harshk" target="_blank" rel="noopener noreferrer" sx={{ textDecoration: 'none' }}>
               <Typography
               variant="body2"
               sx={{
@@ -64,8 +64,8 @@ export default function Footer() {
         <Box
           sx={{
             borderTop: '1px solid rgba(255, 255, 255, 0.05)',
-            mt: 3,
-            pt: 3,
+            mt: 2,
+            pt: 2,
             textAlign: 'center'
           }}
         >

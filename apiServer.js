@@ -143,6 +143,11 @@ app.post('/api/verify', upload.single('record'), async (req, res) => {
     }
 });
 
+// Remove the complex endpoints - keeping only essential ones
+app.get("/api/health", (req, res) => {
+    res.json({ status: "OK", message: "Trusty Health API is running" });
+});
+
 app.get('/', (req, res) => {
     res.send('Health Record Verifier API is running.');
 });
@@ -205,6 +210,82 @@ app.get("/api/topic/info", async (req, res) => {
             autoRenewAccountId: info.autoRenewAccountId ? info.autoRenewAccountId.toString() : null,
             autoRenewPeriod: info.autoRenewPeriod ? info.autoRenewPeriod.seconds.toString() : null
         });
+    } catch (err) {
+        res.status(500).json({ error: err.message });
+    }
+});
+
+// New endpoint to get all verified document transactions
+app.get("/api/verified-documents", async (req, res) => {
+    try {
+        const client = hederaClient();
+        const topicId = process.env.HEDERA_TOPIC_ID;
+        if (!topicId) {
+            return res.status(500).json({ error: "HEDERA_TOPIC_ID not set in .env" });
+        }
+        
+        let verifiedDocuments = [];
+        let count = 0;
+        const limit = parseInt(req.query.limit) || 50; // Default limit of 50
+        
+        await new TopicMessageQuery()
+            .setTopicId(topicId)
+            .setLimit(limit)
+            .subscribe(client, null, (msg) => {
+                try {
+                    const messageContent = msg.contents.toString();
+                    const parsedMessage = JSON.parse(messageContent);
+                    
+                    // Check if this is a verified document transaction
+                    if (parsedMessage.status === 'verified' && parsedMessage.aiVerification) {
+                        verifiedDocuments.push({
+                            transactionId: msg.consensusTimestamp.toString(),
+                            sequenceNumber: msg.sequenceNumber,
+                            consensusTimestamp: msg.consensusTimestamp.toString(),
+                            hash: parsedMessage.hash,
+                            timestamp: parsedMessage.timestamp,
+                            status: parsedMessage.status,
+                            aiVerification: parsedMessage.aiVerification,
+                            model: parsedMessage.model,
+                            message: messageContent
+                        });
+                    }
+                    count++;
+                    if (count >= limit) {
+                        res.json({ 
+                            verifiedDocuments: verifiedDocuments.reverse(), // Show newest first
+                            total: verifiedDocuments.length 
+                        });
+                        client.close();
+                    }
+                } catch (parseError) {
+                    // Skip messages that aren't valid JSON
+                    count++;
+                    if (count >= limit) {
+                        res.json({ 
+                            verifiedDocuments: verifiedDocuments.reverse(),
+                            total: verifiedDocuments.length 
+                        });
+                        client.close();
+                    }
+                }
+            },
+            (err) => {
+                res.status(500).json({ error: err.message });
+                client.close();
+            },
+            () => {
+                if (verifiedDocuments.length > 0) {
+                    res.json({ 
+                        verifiedDocuments: verifiedDocuments.reverse(),
+                        total: verifiedDocuments.length 
+                    });
+                } else {
+                    res.json({ verifiedDocuments: [], total: 0 });
+                }
+                client.close();
+            }
+        );
     } catch (err) {
         res.status(500).json({ error: err.message });
     }

@@ -11,7 +11,7 @@ import {
   CheckCircle, Error, Analytics, Psychology,
   Speed, Verified, Assessment, Timeline
 } from '@mui/icons-material';
-import Footer from '@/components/Footer';
+
 
 interface AIAnalytics {
   totalRecords: number;
@@ -147,18 +147,49 @@ export default function AIAnalyticsPage() {
   }
 
   return (
-    <>
-      <Container maxWidth="lg" sx={{ 
-        py: 8, 
-        flex: 1,
-        display: 'flex',
-        flexDirection: 'column',
-        minHeight: 'calc(100vh - 120px)'
+    <Container maxWidth="lg" sx={{ py: 6 }}>
+      {/* Header */}
+      <Box sx={{ 
+        position: 'relative',
+        mb: 8,
+        mt: 4
       }}>
-      {/* Centered Header */}
-      <Typography variant="h3" sx={{ color: '#fff', mb: 4, textAlign: 'center' }}>
-        AI Verification Dashboard
-      </Typography>
+        <Box sx={{ 
+          position: 'relative',
+          zIndex: 2,
+          maxWidth: { xs: '100%', lg: '80%' },
+          textAlign: 'center',
+          mx: 'auto'
+        }}>
+          <Typography variant="h1" sx={{
+            fontWeight: 700,
+            mb: 3,
+            fontSize: { xs: '3rem', md: '4rem', lg: '4.5rem' },
+            lineHeight: 1.1
+          }}>
+            <Box component="span" sx={{ 
+              background: 'linear-gradient(135deg, #10A74A 0%,rgb(71, 111, 255) 100%)',
+              WebkitBackgroundClip: 'text', 
+              WebkitTextFillColor: 'transparent',
+              backgroundClip: 'text'
+            }}>
+              AI Verification Dashboard
+            </Box>
+          </Typography>
+          <Typography variant="h5" sx={{ 
+            color: 'rgba(255, 255, 255, 0.8)', 
+            fontWeight: 500,
+            fontSize: { xs: '1.2rem', md: '1.5rem' },
+            lineHeight: 1.4,
+            mb: 3,
+          }}>
+            Real-time insights from our multi-model AI verification system
+          </Typography>
+        </Box>
+      </Box>
+
+      {/* Content Section */}
+      <Box sx={{ mb: 8 }}>
 
       {/* System Status Card */}
       <Card sx={{ 
@@ -597,8 +628,7 @@ export default function AIAnalyticsPage() {
           </CardContent>
         </Card>
       </Box>
+      </Box>
     </Container>
-    <Footer />
-  </>
   );
 } 
