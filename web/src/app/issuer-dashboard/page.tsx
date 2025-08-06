@@ -3,7 +3,7 @@
 import React, { useState } from 'react';
 import {
   Container, Box, Typography, Button, Card, CardContent, TextField, Alert,
-  Chip, Autocomplete, Grid, Paper, Divider
+  Chip, Autocomplete, Paper, Divider
 } from '@mui/material';
 import {
   Add as AddIcon,
@@ -12,7 +12,7 @@ import {
   HealthAndSafety as HealthIcon
 } from '@mui/icons-material';
 import { WalletConnect } from '@/components/WalletConnect';
-import { CarbonFootprintDisplay } from '@/components/CarbonFootprintDisplay';
+// import { CarbonFootprintDisplay } from '@/components/CarbonFootprintDisplay';
 
 // SDG Goals relevant to healthcare
 const SDG_GOALS = [
@@ -156,9 +156,9 @@ export default function IssuerDashboard() {
         </Alert>
       )}
 
-             <Grid container spacing={4}>
+             <Box sx={{ display: 'flex', flexDirection: { xs: 'column', md: 'row' }, gap: 4 }}>
          {/* Create Record Form */}
-         <Grid xs={12} md={4}>
+         <Box sx={{ flex: { xs: '1', md: '0 0 33.333%' } }}>
           <Card sx={{
             backgroundColor: 'rgba(255, 255, 255, 0.03)',
             border: '1px solid rgba(255, 255, 255, 0.1)'
@@ -281,19 +281,19 @@ export default function IssuerDashboard() {
               </Button>
 
               {/* Carbon Footprint Display */}
-              <Box sx={{ mt: 3 }}>
+              {/* <Box sx={{ mt: 3 }}>
                 <CarbonFootprintDisplay 
                   transactionCount={records.length + 1}
                   showComparison={false}
                   compact={true}
                 />
-              </Box>
+              </Box> */}
             </CardContent>
           </Card>
-        </Grid>
+        </Box>
 
                  {/* Records List */}
-         <Grid xs={12} md={8}>
+         <Box sx={{ flex: { xs: '1', md: '0 0 66.667%' } }}>
           <Card sx={{
             backgroundColor: 'rgba(255, 255, 255, 0.03)',
             border: '1px solid rgba(255, 255, 255, 0.1)'
@@ -341,9 +341,9 @@ export default function IssuerDashboard() {
                           gap: 0.5,
                           width: '100%'
                         }}>
-                          {record.sdgGoals.map((goal) => (
+                          {record.sdgGoals.map((goal, index) => (
                             <Chip
-                              key={goal}
+                              key={`${goal}-${index}`}
                               label={goal}
                               size="small"
                               sx={{ 
@@ -366,9 +366,9 @@ export default function IssuerDashboard() {
                           gap: 0.5,
                           width: '100%'
                         }}>
-                          {record.sustainabilityTags.map((tag) => (
+                          {record.sustainabilityTags.map((tag, index) => (
                             <Chip
-                              key={tag}
+                              key={`${tag}-${index}`}
                               label={tag}
                               size="small"
                               sx={{ 
@@ -422,8 +422,8 @@ export default function IssuerDashboard() {
               )}
             </CardContent>
           </Card>
-        </Grid>
-      </Grid>
+        </Box>
+      </Box>
       </Box>
     </Container>
   );

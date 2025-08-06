@@ -13,7 +13,6 @@ import {
   Tabs, 
   Tab, 
   Chip, 
-  Grid, 
   IconButton, 
   Tooltip, 
   Badge,
@@ -807,36 +806,36 @@ export default function TransactionsPage() {
                                   <LocalHospital sx={{ fontSize: 20 }} />
                                   Patient Information
                                 </Typography>
-                                <Grid container spacing={2}>
+                                <Box sx={{ display: 'flex', flexDirection: { xs: 'column', sm: 'row' }, gap: 2 }}>
                                   {doc.patientInfo.name && (
-                                    <Grid item xs={12} sm={6}>
+                                    <Box sx={{ flex: { xs: '1', sm: '0 0 50%' } }}>
                                       <Typography sx={{ color: 'rgba(255, 255, 255, 0.8)', fontSize: 14 }}>
                                         <strong>Name:</strong> {doc.patientInfo.name}
                                       </Typography>
-                                    </Grid>
+                                    </Box>
                                   )}
                                   {doc.patientInfo.type && (
-                                    <Grid item xs={12} sm={6}>
+                                    <Box sx={{ flex: { xs: '1', sm: '0 0 50%' } }}>
                                       <Typography sx={{ color: 'rgba(255, 255, 255, 0.8)', fontSize: 14 }}>
                                         <strong>Type:</strong> {doc.patientInfo.type}
                                       </Typography>
-                                    </Grid>
+                                    </Box>
                                   )}
                                   {doc.patientInfo.issuer && (
-                                    <Grid item xs={12} sm={6}>
+                                    <Box sx={{ flex: { xs: '1', sm: '0 0 50%' } }}>
                                       <Typography sx={{ color: 'rgba(255, 255, 255, 0.8)', fontSize: 14 }}>
                                         <strong>Issuer:</strong> {doc.patientInfo.issuer}
                                       </Typography>
-                                    </Grid>
+                                    </Box>
                                   )}
                                   {doc.patientInfo.date && (
-                                    <Grid item xs={12} sm={6}>
+                                    <Box sx={{ flex: { xs: '1', sm: '0 0 50%' } }}>
                                       <Typography sx={{ color: 'rgba(255, 255, 255, 0.8)', fontSize: 14 }}>
                                         <strong>Date:</strong> {doc.patientInfo.date}
                                       </Typography>
-                                    </Grid>
+                                    </Box>
                                   )}
-                                </Grid>
+                                </Box>
                               </Paper>
                             )}
                             
@@ -914,7 +913,7 @@ export default function TransactionsPage() {
                                       flexShrink: 0
                                     }}
                                   />
-                                  {doc.aiVerification.verificationMethods && doc.aiVerification.verificationMethods.map((method, methodIdx) => (
+                                  {doc.aiVerification.verificationMethods && doc.aiVerification.verificationMethods.map((method: string, methodIdx: number) => (
                                     <Chip 
                                       key={methodIdx}
                                       label={method}
