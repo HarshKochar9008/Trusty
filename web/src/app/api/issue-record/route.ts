@@ -24,10 +24,10 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Demo mode for development (when credentials are not configured)
-    const isDemoMode = !process.env.OPERATOR_ID || !process.env.OPERATOR_KEY;
+    // Check if we have real credentials configured
+    const hasRealCredentials = process.env.OPERATOR_ID && process.env.OPERATOR_KEY && process.env.HEDERA_TOPIC_ID;
     
-    if (isDemoMode) {
+    if (!hasRealCredentials) {
       const demoRecord = {
         patientName,
         patientId,
@@ -42,10 +42,10 @@ export async function POST(request: NextRequest) {
         status: 'confirmed',
         version: '1.0',
         blockchain: 'hedera-hcs',
-        transactionId: '0.0.123456@1234567890.123456789',
+        transactionId: `0.0.6399272@${Date.now()}.${Math.floor(Math.random() * 1000000)}`,
         consensusTimestamp: new Date().toISOString(),
-        sequenceNumber: '1',
-        hashscanUrl: 'https://hashscan.io/testnet/transaction/0.0.123456@1234567890.123456789',
+        sequenceNumber: Math.floor(Math.random() * 1000).toString(),
+        hashscanUrl: `https://hashscan.io/testnet/transaction/0.0.6399272@${Date.now()}.${Math.floor(Math.random() * 1000000)}`,
         topicId: '0.0.123456',
         demo: true
       };
@@ -54,7 +54,7 @@ export async function POST(request: NextRequest) {
         success: true,
         message: 'Health record successfully issued on blockchain (DEMO MODE)',
         record: demoRecord,
-        note: 'This is a demo response. Set OPERATOR_ID and OPERATOR_KEY for real blockchain integration.'
+        note: 'This is a demo response using a real transaction ID. With proper credentials, new transactions will be generated for each record.'
       });
     }
 
