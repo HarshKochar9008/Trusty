@@ -110,19 +110,7 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
                   transform: 'translateY(-1px)'
                 } 
               }}>About</Button>
-              <Button href="/ai-analytics" sx={{ 
-                fontWeight: 500, 
-                color: '#fff', 
-                textTransform: 'none',
-                fontSize: '14px',
-                padding: '8px 12px',
-                borderRadius: '8px',
-                transition: 'all 0.2s ease-in-out',
-                '&:hover': { 
-                  backgroundColor: 'rgba(255, 255, 255, 0.1)',
-                  transform: 'translateY(-1px)'
-                } 
-              }}>AI Dashboard</Button>
+
               <Button href="/issuer-dashboard" sx={{
                 fontWeight: 500,
                 color: '#fff',

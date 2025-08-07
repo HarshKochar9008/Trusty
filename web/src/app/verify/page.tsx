@@ -609,19 +609,19 @@ export default function VerifyPage() {
                       mb: 4
                     }}>
                       <Box sx={{ display: 'flex', alignItems: 'center', gap: 3, mb: 4 }}>
-                        {result.aiVerification.isValid ? (
+                        {result.aiVerification?.isValid ? (
                           <CheckCircleIcon sx={{ color: '#00D4AA', fontSize: 48 }} />
                         ) : (
                           <ErrorIcon sx={{ color: '#f44336', fontSize: 48 }} />
                         )}
                         <Box>
                           <Typography variant="h6" sx={{ color: '#fff', mb: 1, fontWeight: 600 }}>
-                            {result.aiVerification.isValid ? 'Verification Passed' : 'Verification Failed'}
+                            {result.aiVerification?.isValid ? 'Verification Passed' : 'Verification Failed'}
                           </Typography>
                           <Typography variant="body2" sx={{ color: 'rgba(255, 255, 255, 0.7)', lineHeight: 1.6 }}>
-                            <strong>Confidence:</strong> {result.aiVerification.confidence}% | 
-                            <strong> Risk Level:</strong> {result.aiVerification.summary.riskLevel} |
-                            <strong> Checks Passed:</strong> {result.aiVerification.summary.passedChecks}/{result.aiVerification.summary.totalChecks}
+                            <strong>Confidence:</strong> {result.aiVerification?.confidence || 0}% | 
+                            <strong> Risk Level:</strong> {result.aiVerification?.summary?.riskLevel || 'N/A'} |
+                            <strong> Checks Passed:</strong> {result.aiVerification?.summary?.passedChecks || 0}/{result.aiVerification?.summary?.totalChecks || 0}
                           </Typography>
                         </Box>
                       </Box>
@@ -642,7 +642,7 @@ export default function VerifyPage() {
                             border: '1px solid rgba(255, 255, 255, 0.1)'
                           }}>
                             <Typography variant="h4" sx={{ color: '#00D4AA', fontWeight: 700, mb: 1 }}>
-                              {result.aiVerification.verificationMethods.llm.confidence || 0}%
+                              {result.aiVerification?.verificationMethods?.llm?.confidence || 0}%
                             </Typography>
                             <Typography variant="body2" sx={{ color: 'rgba(255, 255, 255, 0.8)', fontWeight: 500 }}>
                               LLM Verification
@@ -658,11 +658,11 @@ export default function VerifyPage() {
                             border: '1px solid rgba(255, 255, 255, 0.1)'
                           }}>
                             <Typography variant="h6" sx={{ 
-                              color: result.aiVerification.verificationMethods.fraud.fraudDetected ? '#f44336' : '#00D4AA', 
+                              color: result.aiVerification?.verificationMethods?.fraud?.fraudDetected ? '#f44336' : '#00D4AA', 
                               fontWeight: 700, 
                               mb: 1 
                             }}>
-                              {result.aiVerification.verificationMethods.fraud.fraudDetected ? 'FRAUD' : 'CLEAN'}
+                              {result.aiVerification?.verificationMethods?.fraud?.fraudDetected ? 'FRAUD' : 'CLEAN'}
                             </Typography>
                             <Typography variant="body2" sx={{ color: 'rgba(255, 255, 255, 0.8)', fontWeight: 500 }}>
                               Fraud Detection
@@ -678,11 +678,11 @@ export default function VerifyPage() {
                             border: '1px solid rgba(255, 255, 255, 0.1)'
                           }}>
                             <Typography variant="h6" sx={{ 
-                              color: result.aiVerification.verificationMethods.medical.medicallyValid ? '#00D4AA' : '#f44336', 
+                              color: result.aiVerification?.verificationMethods?.medical?.medicallyValid ? '#00D4AA' : '#f44336', 
                               fontWeight: 700, 
                               mb: 1 
                             }}>
-                              {result.aiVerification.verificationMethods.medical.medicallyValid ? 'VALID' : 'INVALID'}
+                              {result.aiVerification?.verificationMethods?.medical?.medicallyValid ? 'VALID' : 'INVALID'}
                             </Typography>
                             <Typography variant="body2" sx={{ color: 'rgba(255, 255, 255, 0.8)', fontWeight: 500 }}>
                               Medical Validation
@@ -698,11 +698,11 @@ export default function VerifyPage() {
                             border: '1px solid rgba(255, 255, 255, 0.1)'
                           }}>
                             <Typography variant="h6" sx={{ 
-                              color: result.aiVerification.verificationMethods.anomaly.anomaliesDetected ? '#f44336' : '#00D4AA', 
+                              color: result.aiVerification?.verificationMethods?.anomaly?.anomaliesDetected ? '#f44336' : '#00D4AA', 
                               fontWeight: 700, 
                               mb: 1 
                             }}>
-                              {result.aiVerification.verificationMethods.anomaly.anomaliesDetected ? 'ANOMALY' : 'NORMAL'}
+                              {result.aiVerification?.verificationMethods?.anomaly?.anomaliesDetected ? 'ANOMALY' : 'NORMAL'}
                             </Typography>
                             <Typography variant="body2" sx={{ color: 'rgba(255, 255, 255, 0.8)', fontWeight: 500 }}>
                               Anomaly Detection
@@ -712,7 +712,7 @@ export default function VerifyPage() {
                       </Box>
 
                       {/* Recommendations */}
-                      {result.aiVerification.summary.recommendations && result.aiVerification.summary.recommendations.length > 0 && (
+                      {result.aiVerification?.summary?.recommendations && result.aiVerification.summary.recommendations.length > 0 && (
                         <Box>
                           <Typography variant="h6" sx={{ color: '#fff', mb: 2, fontWeight: 600 }}>
                             AI Recommendations
@@ -773,9 +773,9 @@ export default function VerifyPage() {
 
                   {result.hashscanUrl && (
                     <Button 
-                      href={result.hashscanUrl} 
-                      target="_blank" 
-                      rel="noopener"
+                      onClick={() => {
+                        window.open(result.hashscanUrl, '_blank');
+                      }}
                       variant="outlined"
                       startIcon={<AssignmentTurnedInIcon />}
                       sx={{

@@ -1,8 +1,8 @@
 'use client'
 
 import React, { useState } from 'react';
-import { Button, Box, Typography, Chip, CircularProgress, Alert, Dialog, DialogTitle, DialogContent, DialogActions, List, ListItem, ListItemText, ListItemIcon, Menu, MenuItem, Avatar, Divider } from '@mui/material';
-import { AccountBalanceWallet, Logout, Download, Info, CheckCircle, ExpandMore, Person, Settings, AccountCircle } from '@mui/icons-material';
+import { Button, Box, Typography, Chip, CircularProgress, Alert, Dialog, DialogTitle, DialogContent, DialogActions, List, ListItem, ListItemText, ListItemIcon, Menu, MenuItem, Avatar, Divider, Snackbar } from '@mui/material';
+import { AccountBalanceWallet, Logout, Download, Info, CheckCircle, ExpandMore, Person, Settings, AccountCircle, Error, Warning } from '@mui/icons-material';
 import { useWallet } from '@/lib/walletContext';
 
 export const WalletConnect: React.FC = () => {
@@ -16,7 +16,8 @@ export const WalletConnect: React.FC = () => {
     error,
     walletType,
     availableWallets,
-    chainId
+    chainId,
+    clearError
   } = useWallet();
 
   const [showWalletInfo, setShowWalletInfo] = useState(false);
@@ -95,6 +96,10 @@ export const WalletConnect: React.FC = () => {
 
   const handleProfileClose = () => {
     setProfileAnchorEl(null);
+  };
+
+  const handleErrorClose = () => {
+    clearError();
   };
 
   if (isLoading) {
@@ -353,145 +358,30 @@ export const WalletConnect: React.FC = () => {
           </MenuItem>
         ))}
       </Menu>
-{/* 
-      <Button
-        variant="outlined"
-        size="small"
-        onClick={() => setShowWalletInfo(true)}
-        startIcon={<Info />}
-        sx={{
-          color: 'rgba(255, 255, 255, 0.7)',
-          borderColor: 'rgba(255, 255, 255, 0.2)',
-          marginLeft: 1,
-          '&:hover': {
-            borderColor: 'rgba(255, 255, 255, 0.4)',
-            backgroundColor: 'rgba(255, 255, 255, 0.05)',
-          }
-        }}
+
+
+      {/* Error Snackbar */}
+      <Snackbar
+        open={!!error}
+        autoHideDuration={6000}
+        onClose={handleErrorClose}
+        anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
       >
-        Info
-      </Button>
-
-      <Dialog 
-        open={showWalletInfo} 
-        onClose={() => setShowWalletInfo(false)}
-        maxWidth="sm"
-        fullWidth
-        PaperProps={{
-          sx: {
-            backgroundColor: 'rgba(30, 30, 30, 0.95)',
-            backdropFilter: 'blur(20px)',
-            border: '1px solid rgba(255, 255, 255, 0.1)',
-            color: '#fff'
-          }
-        }}
-      >
-        <DialogTitle sx={{ color: '#fff', borderBottom: '1px solid rgba(255, 255, 255, 0.1)' }}>
-          Available Wallets
-        </DialogTitle>
-        <DialogContent sx={{ mt: 2 }}>
-          <Typography variant="body2" sx={{ color: 'rgba(255, 255, 255, 0.7)', mb: 3 }}>
-            Choose from the following wallet options to connect to Hedera Trusty:
-          </Typography>
-          
-          <List>
-            {[
-              {
-                name: 'MetaMask',
-                description: 'Popular Ethereum wallet with browser extension',
-                url: 'https://metamask.io/',
-                color: '#F6851B',
-                available: availableWallets.includes('MetaMask')
-              },
-              {
-                name: 'WalletConnect',
-                description: 'Open protocol for connecting wallets to dApps',
-                url: 'https://walletconnect.com/',
-                color: '#3B99FC',
-                available: availableWallets.includes('WalletConnect')
-              },
-              {
-                name: 'HashPack',
-                description: 'Official Hedera wallet extension',
-                url: 'https://www.hashpack.app/',
-                color: '#10A74A',
-                available: availableWallets.includes('HashPack')
-              },
-              {
-                name: 'Blade',
-                description: 'Mobile-first Hedera wallet',
-                url: 'https://blade.portal.hedera.com/',
-                color: '#2F52D1',
-                available: availableWallets.includes('Blade')
-              }
-            ].map((wallet, index) => (
-              <ListItem key={index} sx={{ 
-                border: '1px solid rgba(255, 255, 255, 0.1)',
-                borderRadius: '8px',
-                mb: 1,
-                backgroundColor: 'rgba(255, 255, 255, 0.02)',
-                opacity: wallet.available ? 1 : 0.5
-              }}>
-                <ListItemIcon>
-                  {wallet.available ? (
-                    <CheckCircle sx={{ color: wallet.color }} />
-                  ) : (
-                    <AccountBalanceWallet sx={{ color: 'rgba(255, 255, 255, 0.3)' }} />
-                  )}
-                </ListItemIcon>
-                <ListItemText 
-                  primary={wallet.name}
-                  secondary={wallet.description}
-                  primaryTypographyProps={{ color: '#fff', fontWeight: 600 }}
-                  secondaryTypographyProps={{ color: 'rgba(255, 255, 255, 0.6)' }}
-                />
-                <Button
-                  size="small"
-                  startIcon={<Download />}
-                  href={wallet.url}
-                  target="_blank"
-                  disabled={!wallet.available}
-                  sx={{
-                    color: wallet.color,
-                    borderColor: wallet.color,
-                    '&:hover': {
-                      borderColor: wallet.color,
-                      backgroundColor: `${wallet.color}20`,
-                    },
-                    '&:disabled': {
-                      color: 'rgba(255, 255, 255, 0.3)',
-                      borderColor: 'rgba(255, 255, 255, 0.1)'
-                    }
-                  }}
-                  variant="outlined"
-                >
-                  {wallet.available ? 'Install' : 'Not Available'}
-                </Button>
-              </ListItem>
-            ))}
-          </List>
-
-          {error && (
-            <Alert severity="warning" sx={{ mt: 2 }}>
-              {error}
-            </Alert>
-          )}
-
-          {availableWallets.length === 0 && (
-            <Alert severity="info" sx={{ mt: 2 }}>
-              No wallet extensions detected. Please install one of the supported wallets to connect.
-            </Alert>
-          )}
-        </DialogContent>
-        <DialogActions sx={{ borderTop: '1px solid rgba(255, 255, 255, 0.1)', p: 2 }}>
-          <Button 
-            onClick={() => setShowWalletInfo(false)}
-            sx={{ color: 'rgba(255, 255, 255, 0.7)' }}
-          >
-            Close
-          </Button>
-        </DialogActions>
-      </Dialog> */}
+        <Alert 
+          onClose={handleErrorClose} 
+          severity="error" 
+          sx={{ 
+            width: '100%',
+            backgroundColor: 'rgba(244, 67, 54, 0.9)',
+            color: '#fff',
+            '& .MuiAlert-icon': {
+              color: '#fff'
+            }
+          }}
+        >
+          {error}
+        </Alert>
+      </Snackbar>
     </>
   );
 }; 
