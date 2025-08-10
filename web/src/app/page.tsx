@@ -51,31 +51,31 @@ export default function Home() {
   };
 
   return (
-    <Container maxWidth="lg" sx={{ py: 6 }}>
+    <Container maxWidth="lg" sx={{ py: { xs: 4, md: 6 } }}>
       {/* Header */}
       <Box sx={{ 
         position: 'relative',
-        mb: 8,
-        mt: 4,
-        minHeight: '50vh'
+        mb: { xs: 4, md: 8 },
+        mt: { xs: 2, md: 4 },
+        minHeight: { xs: '420px', md: '55dvh' }
       }}>
-                   <Box sx={{ 
+         <Box sx={{ 
            position: 'relative',
            zIndex: 2,
            maxWidth: { xs: '100%', lg: '60%' },
            textAlign: { xs: 'center', lg: 'left' },
-           top: 100,
-           left: -120,
+           top: { xs: 0, md: 60, lg: 100 },
+           left: { xs: 0, lg: -120 },
            display: 'flex',
            flexDirection: 'column',
            height: '100%',
-           marginBottom: 100
+           mb: { xs: 2, md: 8 }
          }}>
-          <Typography variant="h1" sx={{
+           <Typography variant="h1" sx={{
             fontWeight: 700,
-            mb: 3,
-            fontSize: { xs: '4.5rem', md: '5rem', lg: '5rem' },
-            lineHeight: 1.1
+            mb: { xs: 2, md: 3 },
+            fontSize: { xs: '2.25rem', sm: '3rem', md: '4rem', lg: '5rem' },
+            lineHeight: 1.15
           }}>
             <Box component="span" sx={{ 
               background: 'linear-gradient(135deg, #10A74A 0%,rgb(71, 111, 255) 100%)',
@@ -89,44 +89,53 @@ export default function Home() {
           <Typography variant="h5" sx={{ 
             color: 'rgba(255, 255, 255, 0.8)', 
             fontWeight: 500,
-            fontSize: { xs: '1.5rem', md: '1.5rem' },
-            lineHeight: 1.4,
-            mb: 3,
+            fontSize: { xs: '1rem', sm: '1.125rem', md: '1.25rem' },
+            lineHeight: 1.5,
+            mb: { xs: 2, md: 3 },
+            px: { xs: 2, md: 0 }
           }}>
             Secure health record verification powered by <br/> AI & Hedera Hashgraph
           </Typography>
         </Box>
         <Box sx={{ 
-          position: 'absolute',
-          top: 50,
-          right: { xs: 0, lg: -10 },
+          position: { xs: 'relative', lg: 'absolute' },
+          top: { lg: 50 },
+          right: { xs: 'auto', lg: -10 },
           width: { xs: '100%', lg: '60%' },
-          height: '100%',
+          height: { xs: 'auto', lg: '100%' },
           display: 'flex',
           justifyContent: { xs: 'center', lg: 'flex-end' },
           alignItems: 'center',
-          zIndex: 1
+          zIndex: 1,
+          mt: { xs: 4, lg: 0 }
         }}>
-                       <img 
-             src="/DNA.png" 
-             alt="DNA Helix" 
-             style={{ 
-               maxWidth: '800px',
-               height: 'auto',
-               filter: 'drop-shadow(0 8px 32px rgba(16, 167, 74, 0.3))',
-                animation: 'dnaFloat 6s ease-in-out infinite, dnaRotate 20s linear infinite, dnaGlow 4s ease-in-out infinite',
-                animationDelay: '0.5s',
-               transform: 'translateX(25%) translateY(-1%)',
-               transformOrigin: 'center'
-             }} 
-           />
-                   </Box>
+           <Box sx={{
+             position: 'relative',
+             width: { xs: '85%', sm: '70%', md: '60%', lg: 'auto' },
+             maxWidth: { xs: 420, md: 560, lg: 800 },
+             aspectRatio: '3 / 4'
+           }}>
+             <img 
+               src="/DNA.png" 
+               alt="DNA Helix" 
+               style={{ 
+                 width: '100%',
+                 height: '100%',
+                 objectFit: 'contain',
+                 filter: 'drop-shadow(0 8px 32px rgba(16, 167, 74, 0.3))',
+                 animation: 'dnaFloat 6s ease-in-out infinite, dnaRotate 20s linear infinite, dnaGlow 4s ease-in-out infinite',
+                 animationDelay: '0.5s',
+                 transformOrigin: 'center'
+               }} 
+             />
+           </Box>
+        </Box>
        </Box>
       {/* Scroll Down Arrow */}
       <Box sx={{
-        display: 'flex',
+        display: { xs: 'none', sm: 'flex' },
         justifyContent: 'center',
-        mb: 6
+        mb: { xs: 2, md: 6 }
       }}>
         <Button
           onClick={handleScrollDown}
@@ -136,9 +145,9 @@ export default function Home() {
             justifyContent: 'center',
             minWidth: 'auto',
             minHeight: 'auto',
-            padding: 1.5,
+            padding: 1.25,
             position: 'relative',
-            top: 60,
+            top: { xs: 20, md: 60 },
             borderRadius: '50%',
             backgroundColor: 'rgba(255, 255, 255, 0.05)',
             border: '1px solid rgba(255, 255, 255, 0.1)',
